@@ -1,0 +1,154 @@
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&family=JetBrains+Mono:wght@300;400;500&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ─── CSS Variables ─────────────────────────────────── */
+:root {
+  --font-display: 'Syne', serif;
+  --font-body: 'DM Sans', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+  --color-cyan: #00f5ff;
+  --color-violet: #8b5cf6;
+  --color-rose: #f43f5e;
+  --bg-primary: #f0f4ff;
+  --bg-surface: #ffffff;
+  --bg-glass: rgba(255,255,255,0.7);
+  --border-color: rgba(0,0,0,0.08);
+  --text-primary: #0f172a;
+  --text-secondary: #334155;
+  --text-muted: #64748b;
+}
+
+.dark {
+  --bg-primary: #030712;
+  --bg-surface: #0d1117;
+  --bg-glass: rgba(255,255,255,0.04);
+  --border-color: rgba(255,255,255,0.08);
+  --text-primary: #f1f5f9;
+  --text-secondary: #cbd5e1;
+  --text-muted: #94a3b8;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; overflow-x: hidden; scrollbar-gutter: stable; }
+
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  overflow-x: hidden;
+  cursor: none;
+  transition: background-color 0.4s ease, color 0.4s ease;
+}
+
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--bg-primary); }
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #00f5ff, #8b5cf6);
+  border-radius: 2px;
+}
+
+.custom-cursor {
+  width: 10px; height: 10px;
+  background: #00f5ff;
+  border-radius: 50%;
+  position: fixed;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%, -50%);
+  mix-blend-mode: difference;
+  transition: width 0.2s, height 0.2s, opacity 0.2s;
+}
+.cursor-follower {
+  width: 34px; height: 34px;
+  border: 1px solid rgba(0,245,255,0.35);
+  border-radius: 50%;
+  position: fixed;
+  pointer-events: none;
+  z-index: 9998;
+  transform: translate(-50%, -50%);
+  transition: all 0.1s ease-out;
+}
+
+.glass-card {
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  transition: background 0.4s ease, border-color 0.4s ease, box-shadow 0.3s ease;
+}
+:root .glass-card {
+  background: rgba(255,255,255,0.7);
+  border: 1px solid rgba(0,0,0,0.07);
+  box-shadow: 0 2px 24px rgba(0,0,0,0.06);
+}
+.dark .glass-card {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.07);
+  box-shadow: none;
+}
+
+.gradient-text-cyan {
+  background: linear-gradient(135deg, #00f5ff, #8b5cf6);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.gradient-text-rose {
+  background: linear-gradient(135deg, #f43f5e, #8b5cf6);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.noise-overlay {
+  position: fixed; inset: 0;
+  pointer-events: none; z-index: 1000;
+  opacity: 0.022;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+}
+
+.section-padding { padding: 6rem 1.5rem; }
+@media (min-width: 768px)  { .section-padding { padding: 8rem 3rem; } }
+@media (min-width: 1280px) { .section-padding { padding: 10rem 6rem; } }
+
+.section-alt { background: transparent; }
+:root .section-alt  { background: rgba(241,245,255,0.55); }
+.dark  .section-alt { background: rgba(255,255,255,0.015); }
+
+.tech-tag {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.05em;
+  padding: 3px 10px;
+  border-radius: 4px;
+  transition: all 0.3s;
+}
+:root .tech-tag {
+  background: rgba(0,140,180,0.08);
+  border: 1px solid rgba(0,140,180,0.2);
+  color: rgb(0,100,160);
+}
+.dark .tech-tag {
+  background: rgba(0,245,255,0.06);
+  border: 1px solid rgba(0,245,255,0.15);
+  color: rgba(0,245,255,0.85);
+}
+
+.video-hero-bg {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover; object-position: center;
+  z-index: 0; pointer-events: none;
+}
+:root .video-hero-bg  { opacity: 0.22; }
+.dark  .video-hero-bg { opacity: 0.55; }
+
+@keyframes loadingBar {
+  0%   { transform: translateX(-100%); }
+  100% { transform: translateX(400%); }
+}
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-18px); }
+}
