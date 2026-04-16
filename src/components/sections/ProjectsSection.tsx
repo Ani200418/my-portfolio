@@ -9,7 +9,7 @@ interface Repo {
   id: number; name: string; description: string | null;
   html_url: string; homepage: string | null; topics: string[];
   language: string | null; stargazers_count: number;
-  forks_count: number; updated_at: string;
+  forks_count: number; updated_at: string; created_at: string; fork: boolean;
 }
 
 const langColors: Record<string, string> = {
@@ -22,12 +22,12 @@ const sortOptions = ['Recent', 'Stars', 'Name'] as const;
 type SortOption = typeof sortOptions[number];
 
 const FALLBACK: Repo[] = [
-  { id:1, name:'task-manager-app', description:'Full-stack task management with auth, real-time updates, and team collaboration.', html_url:'https://github.com/Ani200418', homepage:null, topics:['react','nodejs','mongodb'], language:'TypeScript', stargazers_count:12, forks_count:3, updated_at:new Date().toISOString() },
-  { id:2, name:'ecommerce-platform', description:'Modern e-commerce platform with cart, Stripe payments, and admin dashboard.', html_url:'https://github.com/Ani200418', homepage:null, topics:['nextjs','stripe','prisma'], language:'JavaScript', stargazers_count:8, forks_count:2, updated_at:new Date().toISOString() },
-  { id:3, name:'chat-application', description:'Real-time chat with Socket.io, rooms, and end-to-end message delivery.', html_url:'https://github.com/Ani200418', homepage:null, topics:['socketio','nodejs','react'], language:'JavaScript', stargazers_count:5, forks_count:1, updated_at:new Date().toISOString() },
-  { id:4, name:'ml-price-predictor', description:'ML model for house price prediction using scikit-learn and a Flask REST API.', html_url:'https://github.com/Ani200418', homepage:null, topics:['python','ml','flask'], language:'Python', stargazers_count:7, forks_count:2, updated_at:new Date().toISOString() },
-  { id:5, name:'algo-visualizer', description:'Interactive visualizer for sorting and pathfinding algorithms.', html_url:'https://github.com/Ani200418', homepage:null, topics:['react','algorithms'], language:'TypeScript', stargazers_count:15, forks_count:4, updated_at:new Date().toISOString() },
-  { id:6, name:'portfolio-v1', description:'First iteration of my developer portfolio built with React and CSS animations.', html_url:'https://github.com/Ani200418', homepage:null, topics:['react','css'], language:'JavaScript', stargazers_count:3, forks_count:0, updated_at:new Date().toISOString() },
+  { id:1, name:'task-manager-app', description:'Full-stack task management with auth, real-time updates, and team collaboration.', html_url:'https://github.com/Ani200418', homepage:null, topics:['react','nodejs','mongodb'], language:'TypeScript', stargazers_count:12, forks_count:3, updated_at:new Date().toISOString(), created_at:new Date().toISOString(), fork: false },
+  { id:2, name:'ecommerce-platform', description:'Modern e-commerce platform with cart, Stripe payments, and admin dashboard.', html_url:'https://github.com/Ani200418', homepage:null, topics:['nextjs','stripe','prisma'], language:'JavaScript', stargazers_count:8, forks_count:2, updated_at:new Date().toISOString(), created_at:new Date().toISOString(), fork: false },
+  { id:3, name:'chat-application', description:'Real-time chat with Socket.io, rooms, and end-to-end message delivery.', html_url:'https://github.com/Ani200418', homepage:null, topics:['socketio','nodejs','react'], language:'JavaScript', stargazers_count:5, forks_count:1, updated_at:new Date().toISOString(), created_at:new Date().toISOString(), fork: false },
+  { id:4, name:'ml-price-predictor', description:'ML model for house price prediction using scikit-learn and a Flask REST API.', html_url:'https://github.com/Ani200418', homepage:null, topics:['python','ml','flask'], language:'Python', stargazers_count:7, forks_count:2, updated_at:new Date().toISOString(), created_at:new Date().toISOString(), fork: false },
+  { id:5, name:'algo-visualizer', description:'Interactive visualizer for sorting and pathfinding algorithms.', html_url:'https://github.com/Ani200418', homepage:null, topics:['react','algorithms'], language:'TypeScript', stargazers_count:15, forks_count:4, updated_at:new Date().toISOString(), created_at:new Date().toISOString(), fork: false },
+  { id:6, name:'portfolio-v1', description:'First iteration of my developer portfolio built with React and CSS animations.', html_url:'https://github.com/Ani200418', homepage:null, topics:['react','css'], language:'JavaScript', stargazers_count:3, forks_count:0, updated_at:new Date().toISOString(), created_at:new Date().toISOString(), fork: false },
 ];
 
 export default function ProjectsSection() {
@@ -40,11 +40,11 @@ export default function ProjectsSection() {
   const [langs, setLangs]       = useState<string[]>(['All']);
 
   useEffect(() => {
-    fetch('https://api.github.com/users/Ani200418/repos?per_page=100&sort=updated')
+    fetch('https://api.github.com/users/Ani200418/repos?type=owner&sort=created&direction=desc&per_page=100')
       .then(r => r.json())
       .then((data: Repo[]) => {
         if (!Array.isArray(data)) throw new Error();
-        const visible = data.filter(r => r.description);
+        const visible = data.filter(r => !r.fork);
         const list = visible.length ? visible : FALLBACK;
         setRepos(list);
         setLangs(['All', ...Array.from(new Set(list.map(r => r.language).filter(Boolean) as string[]))]);
@@ -62,7 +62,7 @@ export default function ProjectsSection() {
     let r = langFilter === 'All' ? [...repos] : repos.filter(x => x.language === langFilter);
     if (sort === 'Stars') r.sort((a, b) => b.stargazers_count - a.stargazers_count);
     else if (sort === 'Name') r.sort((a, b) => a.name.localeCompare(b.name));
-    else r.sort((a, b) => new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime());
+    else r.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
     setFiltered(r);
   }, [repos, sort, langFilter]);
 
