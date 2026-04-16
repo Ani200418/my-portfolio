@@ -55,14 +55,16 @@ export default function Navbar({ theme, toggleTheme }: Props) {
             whileHover={{ scale: 1.02 }}
           >
             <div
-              className="w-9 h-9 rounded-lg flex items-center justify-center text-sm font-bold gradient-text-cyan transition-all duration-300"
+              className="w-9 h-9 rounded-lg flex items-center justify-center overflow-hidden transition-all duration-300"
               style={{
-                background: 'linear-gradient(135deg, rgba(0,245,255,0.14), rgba(139,92,246,0.14))',
                 border: '1px solid rgba(0,245,255,0.25)',
-                fontFamily: 'Syne, serif',
               }}
             >
-              AS
+              <img 
+                src="https://unavatar.io/aniketsingh886909@gmail.com" 
+                alt="Aniket Singh" 
+                className="w-full h-full object-cover"
+              />
             </div>
             <span
               className="hidden sm:block text-sm font-semibold tracking-wider dark:text-white/80 text-slate-800"
