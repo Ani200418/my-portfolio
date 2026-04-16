@@ -61,9 +61,14 @@ export default function Navbar({ theme, toggleTheme }: Props) {
               }}
             >
               <img 
-                src="https://unavatar.io/aniketsingh886909@gmail.com" 
+                src="/profile.jpg" 
                 alt="Aniket Singh" 
                 className="w-full h-full object-cover"
+                onError={(e) => {
+                  e.currentTarget.style.display = 'none';
+                  e.currentTarget.parentElement!.innerHTML = 'AS';
+                  e.currentTarget.parentElement!.style.background = 'linear-gradient(135deg, rgba(0,245,255,0.14), rgba(139,92,246,0.14))';
+                }}
               />
             </div>
             <span

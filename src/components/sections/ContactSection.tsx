@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { FiMail, FiPhone, FiGithub, FiLinkedin, FiInstagram, FiSend } from 'react-icons/fi';
 import SectionHeading from '@/components/ui/SectionHeading';
@@ -26,6 +27,27 @@ const colorStyles = {
 const inputCls = `w-full px-4 py-3 rounded-xl text-sm dark:text-white text-slate-900 dark:placeholder-slate-600 placeholder-slate-400 outline-none transition-all duration-200 dark:bg-white/3 bg-slate-100/70 dark:border dark:border-white/7 border border-slate-200 focus:border-cyan-400/40 dark:focus:border-cyan-400/30`;
 
 export default function ContactSection() {
+  const [status, setStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setStatus('sending');
+    
+    const formData = new FormData(e.currentTarget);
+    fetch("https://formsubmit.co/ajax/aniketsingh886909@gmail.com", {
+      method: "POST",
+      headers: { 'Accept': 'application/json' },
+      body: formData
+    })
+      .then(r => r.json())
+      .then(() => {
+        setStatus('success');
+        (e.target as HTMLFormElement).reset();
+        setTimeout(() => setStatus('idle'), 5000);
+      })
+      .catch(() => setStatus('error'));
+  };
+
   return (
     <section id="contact" className="section-padding section-alt relative" style={{ zIndex: 1 }}>
       <div className="max-w-5xl mx-auto">
@@ -114,39 +136,51 @@ export default function ContactSection() {
               I&apos;ll get back within 24 hours.
             </p>
 
-            <form
-              onSubmit={e => {
-                e.preventDefault();
-                window.open('mailto:aniketsingh886909@gmail.com?subject=Portfolio Contact');
-              }}
-              className="space-y-4"
-            >
-              <div>
-                <label className="block text-xs font-mono dark:text-slate-600 text-slate-400 uppercase tracking-widest mb-2">Your Name</label>
-                <input type="text" required placeholder="John Doe" className={inputCls} />
-              </div>
-              <div>
-                <label className="block text-xs font-mono dark:text-slate-600 text-slate-400 uppercase tracking-widest mb-2">Email Address</label>
-                <input type="email" required placeholder="john@example.com" className={inputCls} />
-              </div>
-              <div>
-                <label className="block text-xs font-mono dark:text-slate-600 text-slate-400 uppercase tracking-widest mb-2">Message</label>
-                <textarea required rows={4} placeholder="Hi Aniket, I'd like to talk about..." className={`${inputCls} resize-none`} />
-              </div>
-              <motion.button
-                type="submit"
-                whileHover={{ scale: 1.02, boxShadow: '0 0 28px rgba(0,245,255,0.3)' }}
-                whileTap={{ scale: 0.97 }}
-                className="w-full flex items-center justify-center gap-2 py-3.5 rounded-xl text-sm font-semibold transition-all duration-300"
-                style={{ background: 'linear-gradient(135deg, rgba(0,245,255,0.9), rgba(139,92,246,0.85))', color: '#030712', fontFamily: 'Syne, serif' }}
-              >
-                <FiSend size={14} />
-                Send Message
-              </motion.button>
-            </form>
-          </motion.div>
-        </div>
-      </div>
-    </section>
-  );
+            {status === 'success' ? (
+               <div className="h-64 flex flex-col items-center justify-center text-center space-y-4">
+                 <div className="w-16 h-16 rounded-full bg-cyan-500/20 flex items-center justify-center border border-cyan-500/30">
+                   <FiSend size={24} className="text-cyan-500" />
+                 </div>
+                 <div>
+                   <h4 className="text-lg font-bold dark:text-white text-slate-900">Message Sent!</h4>
+                   <p className="text-sm dark:text-slate-400 text-slate-600 mt-1">Thanks for reaching out. I will reply soon!</p>
+                 </div>
+               </div>
+            ) : (
+              <form onSubmit={handleSubmit} className="space-y-4">
+                <input type="hidden" name="_cc" value="aniketsingh00011@gmail.com" />
+                <input type="hidden" name="_captcha" value="false" />
+                <input type="hidden" name="_template" value="table" />
+                <input type="hidden" name="_subject" value="New Submission From My Portfolio!" />
+
+                <div>
+                  <label className="block text-xs font-mono dark:text-slate-600 text-slate-400 uppercase tracking-widest mb-2">Your Name</label>
+                  <input type="text" name="name" required placeholder="John Doe" className={inputCls} disabled={status === 'sending'} />
+                </div>
+                <div>
+                  <label className="block text-xs font-mono dark:text-slate-600 text-slate-400 uppercase tracking-widest mb-2">Email Address</label>
+                  <input type="email" name="email" required placeholder="john@example.com" className={inputCls} disabled={status === 'sending'} />
+                </div>
+                <div>
+                  <label className="block text-xs font-mono dark:text-slate-600 text-slate-400 uppercase tracking-widest mb-2">Message</label>
+                  <textarea name="message" required rows={4} placeholder="Hi Aniket, I'd like to talk about..." className={`${inputCls} resize-none`} disabled={status === 'sending'} />
+                </div>
+                
+                {status === 'error' && (
+                  <p className="text-xs text-rose-500 text-center">Something went wrong. Please try again.</p>
+                )}
+                
+                <motion.button
+                  type="submit"
+                  disabled={status === 'sending'}
+                  whileHover={status !== 'sending' ? { scale: 1.02, boxShadow: '0 0 28px rgba(0,245,255,0.3)' } : {}}
+                  whileTap={status !== 'sending' ? { scale: 0.97 } : {}}
+                  className={`w-full flex items-center justify-center gap-2 py-3.5 rounded-xl text-sm font-semibold transition-all duration-300 ${status === 'sending' ? 'opacity-70 cursor-not-allowed' : ''}`}
+                  style={{ background: 'linear-gradient(135deg, rgba(0,245,255,0.9), rgba(139,92,246,0.85))', color: '#030712', fontFamily: 'Syne, serif' }}
+                >
+                  <FiSend size={14} className={status === 'sending' ? 'animate-pulse' : ''} />
+                  {status === 'sending' ? 'Sending...' : 'Send Message'}
+                </motion.button>
+              </form>
+            )}
 }
