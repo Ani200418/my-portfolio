@@ -64,8 +64,9 @@ export default function Navbar({ theme, toggleTheme }: Props) {
               }}
             >
               {!imgError ? (
+                /* eslint-disable-next-line @next/next/no-img-element */
                 <img 
-                  src="/profile.jpg" 
+                  src="/profile.jpg"  
                   alt="Aniket Singh" 
                   className="w-full h-full object-cover"
                   onError={() => setImgError(true)}
