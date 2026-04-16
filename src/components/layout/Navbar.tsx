@@ -19,6 +19,7 @@ interface Props {
 export default function Navbar({ theme, toggleTheme }: Props) {
   const [scrolled, setScrolled]   = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [imgError, setImgError]     = useState(false);
 
   useEffect(() => {
     const fn = () => setScrolled(window.scrollY > 50);
@@ -55,21 +56,21 @@ export default function Navbar({ theme, toggleTheme }: Props) {
             whileHover={{ scale: 1.02 }}
           >
             <div
-              className="w-9 h-9 rounded-lg flex items-center justify-center overflow-hidden transition-all duration-300"
+              className={`w-9 h-9 rounded-lg flex items-center justify-center overflow-hidden transition-all duration-300 ${imgError ? 'text-sm font-bold gradient-text-cyan' : ''}`}
               style={{
                 border: '1px solid rgba(0,245,255,0.25)',
+                background: imgError ? 'linear-gradient(135deg, rgba(0,245,255,0.14), rgba(139,92,246,0.14))' : undefined,
+                fontFamily: imgError ? 'Syne, serif' : undefined,
               }}
             >
-              <img 
-                src="/profile.jpg" 
-                alt="Aniket Singh" 
-                className="w-full h-full object-cover"
-                onError={(e) => {
-                  e.currentTarget.style.display = 'none';
-                  e.currentTarget.parentElement!.innerHTML = 'AS';
-                  e.currentTarget.parentElement!.style.background = 'linear-gradient(135deg, rgba(0,245,255,0.14), rgba(139,92,246,0.14))';
-                }}
-              />
+              {!imgError ? (
+                <img 
+                  src="/profile.jpg" 
+                  alt="Aniket Singh" 
+                  className="w-full h-full object-cover"
+                  onError={() => setImgError(true)}
+                />
+              ) : "AS"}
             </div>
             <span
               className="hidden sm:block text-sm font-semibold tracking-wider dark:text-white/80 text-slate-800"
