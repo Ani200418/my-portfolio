@@ -6,8 +6,8 @@ import { FiMail, FiPhone, FiGithub, FiLinkedin, FiInstagram, FiSend } from 'reac
 import SectionHeading from '@/components/ui/SectionHeading';
 
 const contactItems = [
-  { icon: FiMail,  label: 'Primary Email',   value: 'aniketsingh886909@gmail.com', href: 'mailto:aniketsingh886909@gmail.com', color: 'cyan'   },
-  { icon: FiMail,  label: 'Secondary Email',  value: 'aniketsingh00011@gmail.com',  href: 'mailto:aniketsingh00011@gmail.com',  color: 'violet' },
+  { icon: FiMail,  label: 'Primary Email',   value: 'aniketsingh886909@gmail.com', href: 'https://mail.google.com/mail/?view=cm&fs=1&to=aniketsingh886909@gmail.com', color: 'cyan'   },
+  { icon: FiMail,  label: 'Secondary Email',  value: 'aniketsingh00011@gmail.com',  href: 'https://mail.google.com/mail/?view=cm&fs=1&to=aniketsingh00011@gmail.com',  color: 'violet' },
   { icon: FiPhone, label: 'Phone 1',          value: '+91 6239318834',              href: 'tel:+916239318834',                  color: 'rose'   },
   { icon: FiPhone, label: 'Phone 2',          value: '+91 8869094152',              href: 'tel:+918869094152',                  color: 'cyan'   },
 ];
@@ -39,8 +39,8 @@ export default function ContactSection() {
     // Construct the email body
     const bodyText = `Name: ${name}%0D%0AEmail: ${email}%0D%0A%0D%0A${msg}`;
     
-    // Changing location.href opens the mail client natively without opening a blank new tab
-    window.location.href = `mailto:aniketsingh886909@gmail.com?subject=Portfolio Contact from ${name}&body=${bodyText}`;
+    // Open Gmail compose tab cleanly, bypassing broken OS mail configurations
+    window.open(`https://mail.google.com/mail/?view=cm&fs=1&to=aniketsingh886909@gmail.com&su=Portfolio Contact from ${name}&body=${bodyText}`, '_blank');
   };
 
   return (

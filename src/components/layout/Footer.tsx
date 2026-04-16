@@ -71,7 +71,7 @@ export default function Footer() {
             <ul className="space-y-3">
               {['aniketsingh886909@gmail.com','aniketsingh00011@gmail.com'].map(email => (
                 <li key={email}>
-                  <a href={`mailto:${email}`} className="text-sm dark:text-slate-500 text-slate-500 dark:hover:text-cyan-400 hover:text-cyan-600 transition-colors break-all">
+                  <a href={`https://mail.google.com/mail/?view=cm&fs=1&to=${email}`} target="_blank" rel="noopener noreferrer" className="text-sm dark:text-slate-500 text-slate-500 dark:hover:text-cyan-400 hover:text-cyan-600 transition-colors break-all">
                     {email}
                   </a>
                 </li>
