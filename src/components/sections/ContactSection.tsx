@@ -31,16 +31,21 @@ export default function ContactSection() {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setStatus('sending');
+    
     const formData = new FormData(e.currentTarget);
-    const name = formData.get('name') || '';
-    const email = formData.get('email') || '';
-    const msg = formData.get('message') || '';
-    
-    // Construct the email body
-    const bodyText = `Name: ${name}%0D%0AEmail: ${email}%0D%0A%0D%0A${msg}`;
-    
-    // Open Gmail compose tab cleanly, bypassing broken OS mail configurations
-    window.open(`https://mail.google.com/mail/?view=cm&fs=1&to=aniketsingh886909@gmail.com&su=Portfolio Contact from ${name}&body=${bodyText}`, '_blank');
+    fetch("https://formsubmit.co/ajax/aniketsingh886909@gmail.com", {
+      method: "POST",
+      headers: { 'Accept': 'application/json' },
+      body: formData
+    })
+      .then(r => r.json())
+      .then(() => {
+        setStatus('success');
+        (e.target as HTMLFormElement).reset();
+        setTimeout(() => setStatus('idle'), 5000);
+      })
+      .catch(() => setStatus('error'));
   };
 
   return (
@@ -143,6 +148,11 @@ export default function ContactSection() {
                </div>
             ) : (
               <form onSubmit={handleSubmit} className="space-y-4">
+                <input type="hidden" name="_cc" value="aniketsingh00011@gmail.com" />
+                <input type="hidden" name="_captcha" value="false" />
+                <input type="hidden" name="_template" value="table" />
+                <input type="hidden" name="_subject" value="New Submission From My Portfolio!" />
+
                 <div>
                   <label className="block text-xs font-mono dark:text-slate-600 text-slate-400 uppercase tracking-widest mb-2">Your Name</label>
                   <input type="text" name="name" required placeholder="John Doe" className={inputCls} disabled={status === 'sending'} />
