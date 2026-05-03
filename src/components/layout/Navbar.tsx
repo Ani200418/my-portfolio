@@ -182,7 +182,7 @@ export default function Navbar({ theme, toggleTheme }: Props) {
                 </motion.button>
               ))}
               <a
-                href="https://drive.google.com/file/d/1z7YEYUlqArMu9aIoUHLg3bOUdncuM7Ml/view?usp=sharing"
+                href="https://drive.google.com/file/d/1FpOjfvlJgqnVLQyHlVDWXi9XKZfs9cB9/view?usp=sharing"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="mt-4 text-center py-3 rounded-lg text-cyan-500 dark:text-cyan-400 font-mono text-sm flex items-center justify-center gap-2"
