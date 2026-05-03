@@ -115,7 +115,7 @@ export default function Navbar({ theme, toggleTheme }: Props) {
 
             {/* Resume */}
             <motion.a
-              href="https://drive.google.com/file/d/18Yg53CGF3dDHck29joFLt534hLo_V32C/view?usp=sharing"
+              href="https://drive.google.com/file/d/1FpOjfvlJgqnVLQyHlVDWXi9XKZfs9cB9/view?usp=sharing"
               target="_blank"
               rel="noopener noreferrer"
               whileHover={{ scale: 1.05 }}
