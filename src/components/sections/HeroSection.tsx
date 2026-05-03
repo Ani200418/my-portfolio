@@ -5,7 +5,7 @@ import { TypeAnimation } from 'react-type-animation';
 import { FiGithub, FiLinkedin, FiInstagram, FiDownload, FiExternalLink } from 'react-icons/fi';
 import { useRef, useState, useEffect } from 'react';
 
-const RESUME_URL = 'https://drive.google.com/file/d/1z7YEYUlqArMu9aIoUHLg3bOUdncuM7Ml/view?usp=sharing';
+const RESUME_URL = 'https://drive.google.com/file/d/1FpOjfvlJgqnVLQyHlVDWXi9XKZfs9cB9/view?usp=sharing';
 
 const socials = [
   { icon: FiGithub,    href: 'https://github.com/Ani200418',                 label: 'GitHub'    },
